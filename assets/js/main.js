@@ -133,5 +133,21 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
+    /* =========================
+       SMOOTH PARALLAX
+    ========================= */
+
+    const heroBg = document.querySelector('.hero-bg');
+
+    window.addEventListener('scroll', () => {
+
+        if(window.innerWidth < 768) return;
+
+        const scrollY = window.scrollY;
+        const speed = 0.3;
+
+        heroBg.style.transform = `translateY(${scrollY * speed}px)`;
+    });
+
     updateCart();
 });
