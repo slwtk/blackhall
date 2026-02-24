@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlackHall Kids — Онлайн магазин</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f9fafb;
+      --card:#ffffff;
+      --primary:#f4b8a4;
+      --primary-dark:#eaa18a;
+      --text:#1f2937;
+      --muted:#6b7280;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);}
+    .container{max-width:1400px;margin:0 auto;padding:0 20px;}
+
+    .hero{
+      background:linear-gradient(rgba(255,255,255,0.85),rgba(255,255,255,0.9)),
+      url('hero.jpg') center/cover no-repeat;
+      padding:120px 0;text-align:center;
+    }
+    .hero h1{font-size:clamp(28px,4vw,44px);margin-bottom:15px;}
+    .hero p{color:var(--muted);margin-bottom:20px;}
+    .hero button{background:var(--primary);border:none;padding:12px 24px;border-radius:30px;cursor:pointer;}
+
+    .advantages{padding:60px 0;}
+    .adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+    .adv-item{background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 5px 20px rgba(0,0,0,0.05);}
+
+    .products{padding:60px 0;}
+    .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:28px;}
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,0.05);
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      transition:0.3s;
+    }
+    .card:hover{transform:translateY(-5px);}
+
+    .badge{
+      position:absolute;top:12px;left:12px;
+      background:#ff6b6b;color:white;
+      font-size:11px;padding:5px 9px;border-radius:20px;
+    }
+
+    .image-wrapper{
+      aspect-ratio:4/5;
+      background:white;
+      display:flex;align-items:center;justify-content:center;
+      padding:15px;
+    }
+    .image-wrapper img{max-width:100%;max-height:100%;object-fit:contain;}
+
+    .card-body{padding:16px;}
+    .card h3{font-size:16px;margin-bottom:6px;}
+    .rating{font-size:12px;color:#f59e0b;margin-bottom:6px;}
+    .card p{font-size:13px;color:var(--muted);}
+    .price{margin:10px 0;font-weight:600;}
+
+    button{
+      background:var(--primary);
+      border:none;
+      padding:8px 14px;
+      border-radius:20px;
+      cursor:pointer;
+    }
+    button:hover{background:var(--primary-dark);}
+
+    .reviews{padding:80px 0;background:white;}
+    .review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px;margin-top:30px;}
+    .review{background:var(--bg);padding:20px;border-radius:14px;}
+
+    .subscribe{padding:70px 0;text-align:center;}
+    .subscribe input{padding:10px;border-radius:10px;border:1px solid #ddd;margin-right:10px;width:250px;max-width:80%;}
+
+    footer{background:#111;color:white;padding:60px 0;}
+    .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:25px;}
+
+    .cart-button{
+      position:fixed;top:20px;right:20px;
+      background:#111;color:white;
+      padding:10px 16px;border-radius:30px;
+      font-size:14px;z-index:1000;
+      transition:0.3s;
+    }
+    .cart-button.disabled{
+      background:#aaa;cursor:not-allowed;opacity:0.6;
+    }
+    .cart-button.shifted{right:380px;}
+
+    .cart-panel{
+      position:fixed;right:-360px;top:0;
+      width:360px;height:100%;
+      background:white;
+      box-shadow:-20px 0 40px rgba(0,0,0,0.1);
+      padding:25px;transition:0.35s cubic-bezier(.4,0,.2,1);
+      overflow-y:auto;z-index:1100;
+    }
+    .cart-panel.active{right:0;}
+
+    .cart-close{
+      position:absolute;top:15px;right:15px;
+      font-size:18px;cursor:pointer;
+    }
+
+    @media(max-width:768px){
+      .hero{padding:80px 0;}
+      .subscribe input{width:100%;margin-bottom:10px;}
+      .cart-button.shifted{
+        opacity:0;
+        pointer-events:none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="container">
+    <h1>Уют и забота для малышей</h1>
+    <p>Экологичные и безопасные товары</p>
+    <button onclick="document.querySelector('.products').scrollIntoView({behavior:'smooth'})">
+      Смотреть каталог
+    </button>
+  </div>
+</section>
+
+<section class="advantages">
+  <div class="container">
+    <div class="adv-grid">
+      <div class="adv-item">🚚 Быстрая доставка</div>
+      <div class="adv-item">🌿 Эко-материалы</div>
+      <div class="adv-item">🔒 Гарантия качества</div>
+      <div class="adv-item">💬 Поддержка 24/7</div>
+    </div>
+  </div>
+</section>
+
+<button class="cart-button disabled" id="cartBtn" onclick="toggleCart()">
+  Корзина (<span id="cart-count">0</span>)
+</button>
+
+<section class="products">
+  <div class="container">
+    <div class="product-grid">
+
+      <div class="card">
+        <div class="badge">Хит</div>
+        <div class="image-wrapper"><img src="product1.jpg"></div>
+        <div class="card-body">
+          <h3>Мягкая подушка</h3>
+          <div class="rating">⭐⭐⭐⭐⭐ (124)</div>
+          <p>Гипоаллергенный материал</p>
+          <div class="price">₽ 1990</div>
+          <button onclick="addToCart('Подушка',1990)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="badge">Новинка</div>
+        <div class="image-wrapper"><img src="product2.jpg"></div>
+        <div class="card-body">
+          <h3>Детская кроватка</h3>
+          <div class="rating">⭐⭐⭐⭐⭐ (89)</div>
+          <p>Натуральное дерево</p>
+          <div class="price">₽ 18990</div>
+          <button onclick="addToCart('Кроватка',18990)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="badge">Популярно</div>
+        <div class="image-wrapper"><img src="product3.jpg"></div>
+        <div class="card-body">
+          <h3>Бортики</h3>
+          <div class="rating">⭐⭐⭐⭐⭐ (64)</div>
+          <p>Комфорт и защита</p>
+          <div class="price">₽ 4490</div>
+          <button onclick="addToCart('Бортики',4490)">В корзину</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="reviews">
+  <div class="container">
+    <h2>Отзывы клиентов</h2>
+    <div class="review-grid">
+      <div class="review">"Очень качественная кроватка!"<br><strong>Анна</strong></div>
+      <div class="review">"Материалы безопасные и приятные."<br><strong>Мария</strong></div>
+      <div class="review">"Быстрая доставка."<br><strong>Екатерина</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="subscribe">
+  <div class="container">
+    <h2>Скидка 10% на первый заказ</h2><br>
+    <input placeholder="Введите email">
+    <button>Получить скидку</button>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div><strong>BlackHall Kids</strong><br>© 2026</div>
+      <div>О нас<br>Доставка<br>Оплата</div>
+      <div>Instagram<br>WhatsApp<br>Email</div>
+    </div>
+  </div>
+</footer>
+
+<div class="cart-panel" id="cart"></div>
+
+<script>
+  let cart=[];
+
+  function toggleCart(){
+    if(cart.length===0) return;
+    const panel=document.getElementById('cart');
+    const btn=document.getElementById('cartBtn');
+    panel.classList.toggle('active');
+    btn.classList.toggle('shifted');
+  }
+
+  function closeCart(){
+    document.getElementById('cart').classList.remove('active');
+    document.getElementById('cartBtn').classList.remove('shifted');
+  }
+
+  function addToCart(name,price){
+    cart.push({name,price});
+    updateCart();
+  }
+
+  function updateCart(){
+    const panel=document.getElementById('cart');
+    const countEl=document.getElementById('cart-count');
+    const btn=document.getElementById('cartBtn');
+
+    countEl.textContent=cart.length;
+
+    if(cart.length===0){
+      btn.classList.add('disabled');
+      panel.classList.remove('active');
+      btn.classList.remove('shifted');
+      panel.innerHTML="<h3>Корзина пуста</h3>";
+      return;
+    }else{
+      btn.classList.remove('disabled');
+    }
+
+    panel.innerHTML=`
+<span class="cart-close" onclick="closeCart()">✕</span>
+<h3>Корзина</h3>`;
+
+    let total=0;
+
+    cart.forEach((item,index)=>{
+      total+=item.price;
+      panel.innerHTML+=`
+<div style="margin-bottom:12px;font-size:14px;">
+${item.name} — ₽ ${item.price}
+<button onclick="removeItem(${index})"
+style="float:right;background:#eee;border:none;border-radius:8px;padding:2px 6px;">×</button>
+</div>`;
+    });
+
+    panel.innerHTML+=`
+<hr style="margin:15px 0;">
+<strong>Итого: ₽ ${total}</strong>
+<br><br>
+<input id="name" placeholder="Ваше имя" style="width:100%;padding:8px;margin-bottom:8px;">
+<input id="phone" placeholder="Телефон" style="width:100%;padding:8px;margin-bottom:10px;">
+<button onclick="checkout()" style="width:100%;">Оформить заказ</button>`;
+  }
+
+  function removeItem(index){
+    cart.splice(index,1);
+    updateCart();
+  }
+
+  function checkout(){
+    const name=document.getElementById('name').value;
+    const phone=document.getElementById('phone').value;
+    if(!name||!phone){alert("Введите имя и телефон");return;}
+    let message="Новый заказ:%0A";
+    cart.forEach(item=>{
+      message+=`${item.name} — ₽ ${item.price}%0A`;
+    });
+    message+=`%0AИмя: ${name}%0AТелефон: ${phone}`;
+    window.open(`https://wa.me/79999999999?text=${message}`,'_blank');
+  }
+
+  updateCart();
+</script>
+
+</body>
+</html>
