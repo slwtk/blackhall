@@ -7,37 +7,38 @@
     --muted:#6b7280;
 }
 
-/* =========================
-   BASE
-========================= */
+/* ================= BASE ================= */
 
-*{margin:0;padding:0;box-sizing:border-box;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 body{
     font-family:'Inter',sans-serif;
-    background: linear-gradient(180deg, #f9fafb 0%, #f1f5f9 100%);
+    background:linear-gradient(180deg,#f9fafb 0%,#f1f5f9 100%);
     color:var(--text);
+    line-height:1.5;
 }
 
 .container{
     width:100%;
-    max-width:1600px;
+    max-width:1400px;
     margin:0 auto;
-    padding:0 clamp(20px,4vw,60px);
+    padding:0 24px;
 }
 
-/* =========================
-   HERO
-========================= */
+/* ================= HERO ================= */
 
 .hero{
-    position:relative;
-    overflow:hidden;
-    min-height:75vh;
+    min-height:100svh;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
+    position:relative;
+    overflow:hidden;
 }
 
 .hero-bg{
@@ -47,13 +48,10 @@ body{
             linear-gradient(rgba(255,255,255,0.85),rgba(255,255,255,0.9)),
             url('../images/hero.jpg') center/cover no-repeat;
     z-index:-1;
-    transform:translateY(0);
-    will-change:transform;
 }
 
 .hero h1{
     font-size:clamp(36px,4vw,64px);
-    font-weight:700;
     margin-bottom:20px;
 }
 
@@ -63,66 +61,81 @@ body{
     margin-bottom:25px;
 }
 
-.hero button{
-    background:var(--primary);
-    border:none;
-    padding:14px 30px;
-    border-radius:40px;
-    cursor:pointer;
-    font-weight:500;
-    transition:0.3s;
+/* ================= SECTION HEADER ================= */
+
+.section-header{
+    text-align:center;
+    margin-bottom:60px;
 }
 
-.hero button:hover{
-    background:var(--primary-dark);
+.section-header h2{
+    font-size:32px;
+    margin-bottom:10px;
 }
 
-/* =========================
-   ADVANTAGES
-========================= */
+.section-header p{
+    color:var(--muted);
+}
 
-.advantages{padding:80px 0;}
+/* ================= ADVANTAGES ================= */
+
+.advantages{
+    padding:100px 0;
+}
 
 .adv-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:30px;
 }
 
 .adv-item{
     background:white;
-    padding:30px;
+    padding:35px;
     border-radius:20px;
     text-align:center;
     box-shadow:0 10px 30px rgba(0,0,0,0.05);
-    transition:0.3s;
+    transition:.3s ease;
 }
 
 .adv-item:hover{
     transform:translateY(-6px);
+    box-shadow:0 20px 50px rgba(0,0,0,0.08);
 }
 
-/* =========================
-   PRODUCTS
-========================= */
+.adv-icon{
+    width:60px;
+    height:60px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:rgba(244,184,164,0.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
 
-.products{padding:100px 0;}
+/* ================= PRODUCTS ================= */
+
+.products{
+    padding:100px 0;
+}
 
 .product-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-    gap:40px;
+    gap:35px;
 }
 
 .card{
     background:var(--card);
-    border-radius:22px;
+    border-radius:20px;
     overflow:hidden;
-    box-shadow:0 15px 40px rgba(0,0,0,0.05);
+    position:relative;
     display:flex;
     flex-direction:column;
-    position:relative;
-    transition:transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
+    transition:.3s ease;
 }
 
 .card:hover{
@@ -139,15 +152,16 @@ body{
     font-size:11px;
     padding:6px 10px;
     border-radius:20px;
+    z-index:5;
 }
 
 .image-wrapper{
     aspect-ratio:4/5;
-    background:white;
     display:flex;
     align-items:center;
     justify-content:center;
     padding:20px;
+    background:white;
 }
 
 .image-wrapper img{
@@ -156,46 +170,16 @@ body{
     object-fit:contain;
 }
 
-.card-body{padding:20px;}
-
-.card h3{
-    font-size:18px;
-    margin-bottom:8px;
-}
-
-.rating{
-    font-size:13px;
-    color:#f59e0b;
-    margin-bottom:8px;
-}
-
-.card p{
-    font-size:14px;
-    color:var(--muted);
+.card-body{
+    padding:20px;
 }
 
 .price{
     margin:12px 0;
     font-weight:600;
-    font-size:16px;
 }
 
-button{
-    background:var(--primary);
-    border:none;
-    padding:10px 18px;
-    border-radius:25px;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    background:var(--primary-dark);
-}
-
-/* =========================
-   REVIEWS
-========================= */
+/* ================= REVIEWS ================= */
 
 .reviews{
     padding:100px 0;
@@ -204,20 +188,19 @@ button:hover{
 
 .review-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:35px;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
     margin-top:40px;
 }
 
 .review{
     background:var(--bg);
-    padding:30px;
-    border-radius:18px;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.03);
 }
 
-/* =========================
-   SUBSCRIBE
-========================= */
+/* ================= SUBSCRIBE ================= */
 
 .subscribe{
     padding:100px 0;
@@ -226,16 +209,13 @@ button:hover{
 
 .subscribe input{
     padding:12px;
-    border-radius:12px;
+    border-radius:10px;
     border:1px solid #ddd;
+    width:260px;
     margin-right:10px;
-    width:280px;
-    max-width:80%;
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* ================= FOOTER ================= */
 
 footer{
     background:#111;
@@ -245,13 +225,30 @@ footer{
 
 .footer-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
     gap:30px;
 }
 
-/* =========================
-   CART BUTTON
-========================= */
+footer strong{
+    font-size:18px;
+}
+
+/* ================= BUTTONS ================= */
+
+button{
+    background:var(--primary);
+    border:none;
+    padding:10px 18px;
+    border-radius:25px;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+button:hover{
+    background:var(--primary-dark);
+}
+
+/* ================= CART BUTTON ================= */
 
 .cart-button{
     position:fixed;
@@ -262,70 +259,204 @@ footer{
     padding:12px 20px;
     border-radius:40px;
     font-size:14px;
-    z-index:1000;
-    transition:0.3s;
+    z-index:1200;
 }
 
 .cart-button.disabled{
     background:#aaa;
     cursor:not-allowed;
-    opacity:0.6;
+    opacity:.6;
 }
 
-.cart-button.shifted{
-    right:420px;
-}
-
-/* =========================
-   GLASS CART PANEL
-========================= */
+/* ================= CART POPOVER ================= */
 
 .cart-panel{
     position:fixed;
-    right:-420px;
-    top:0;
-    width:420px;
-    height:100%;
-    padding:35px;
+    top:90px;
+    right:30px;
+    width:360px;
+    max-width:90%;
+    max-height:70vh;
     overflow-y:auto;
+    padding:25px;
+    border-radius:20px;
+
+    /* красивый стиль */
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(10px);
+    box-shadow:0 25px 70px rgba(0,0,0,0.25);
+
+    opacity:0;
+    transform:translateY(-15px) scale(.97);
+    pointer-events:none;
+    transition:.25s ease;
     z-index:1100;
-
-    /* GLASS EFFECT */
-    background:rgba(255,255,255,0.7);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-    border-left:1px solid rgba(255,255,255,0.4);
-    box-shadow:-20px 0 60px rgba(0,0,0,0.1);
-
-    transition:0.4s cubic-bezier(.4,0,.2,1);
 }
 
 .cart-panel.active{
-    right:0;
+    opacity:1;
+    transform:translateY(0) scale(1);
+    pointer-events:auto;
 }
 
-.cart-close{
-    position:absolute;
-    top:20px;
-    right:20px;
-    font-size:20px;
+/* ===== ВНУТРЕННИЕ СТИЛИ КОРЗИНЫ ===== */
+
+.cart-panel h3{
+    margin-bottom:15px;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+    font-size:14px;
+}
+
+.cart-price{
+    font-weight:600;
+    margin-left:8px;
+}
+
+.cart-remove{
+    background:#f3f4f6;
+    border:none;
+    border-radius:8px;
+    padding:4px 8px;
+    font-size:13px;
     cursor:pointer;
+    transition:.2s;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+.cart-remove:hover{
+    background:#e5e7eb;
+}
+
+.cart-total{
+    margin:15px 0;
+    font-weight:600;
+}
+
+.cart-panel input{
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    margin-bottom:10px;
+}
+
+.cart-checkout{
+    width:100%;
+}
+
+/* ================= CART POPOVER ================= */
+
+.cart-panel{
+    position:fixed;
+    top:90px;
+    right:30px;
+    width:360px;
+    max-width:90%;
+    max-height:70vh;
+    overflow-y:auto;
+    padding:25px;
+    border-radius:20px;
+    background:white;
+    box-shadow:0 20px 60px rgba(0,0,0,0.2);
+    opacity:0;
+    transform:translateY(-10px);
+    pointer-events:none;
+    transition:.25s ease;
+    z-index:1100;
+}
+
+.cart-panel.active{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+/* ================= REVIEW UPGRADE ================= */
+
+.reviews{
+    padding:120px 0;
+    background:linear-gradient(180deg,#ffffff,#f9fafb);
+}
+
+.reviews-summary{
+    margin-top:15px;
+    font-weight:500;
+    color:#111;
+}
+
+.review-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:40px;
+    margin-top:50px;
+}
+
+.review{
+    background:white;
+    padding:30px;
+    border-radius:22px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.04);
+    transition:.3s ease;
+}
+
+.review:hover{
+    transform:translateY(-8px);
+    box-shadow:0 25px 60px rgba(0,0,0,0.08);
+}
+
+.review-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.review-avatar{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#f4b8a4,#eaa18a);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+    font-size:18px;
+}
+
+.review-name{
+    font-weight:600;
+    font-size:15px;
+}
+
+.review-stars{
+    color:#f59e0b;
+    font-size:14px;
+}
+
+.review p{
+    font-size:14px;
+    color:#374151;
+    line-height:1.6;
+}
+
+/* ================= RESPONSIVE ================= */
 
 @media(max-width:768px){
 
-    .hero{min-height:60vh;}
-
-    .cart-button.shifted{
-        opacity:0;
-        pointer-events:none;
+    .hero{
+        min-height:70vh;
     }
 
     .cart-panel{
-        width:100%;
+        right:10px;
+        left:10px;
+        width:auto;
     }
+
 }

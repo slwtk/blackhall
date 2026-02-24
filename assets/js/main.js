@@ -1,15 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     const cart = [];
-
     const cartBtn = document.getElementById('cartBtn');
     const cartPanel = document.getElementById('cart');
     const cartCount = document.getElementById('cart-count');
     const scrollBtn = document.getElementById('scrollToProducts');
+    const heroBg = document.querySelector('.hero-bg');
 
-    /* =========================
-       SCROLL
-    ========================== */
+    /* SCROLL */
+
     if (scrollBtn) {
         scrollBtn.addEventListener('click', () => {
             document.querySelector('.products')
@@ -17,39 +16,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* =========================
-       ADD TO CART
-    ========================== */
+    /* PARALLAX */
+
+    window.addEventListener('scroll', () => {
+        if (!heroBg || window.innerWidth < 768) return;
+        heroBg.style.transform =
+            `translate3d(0, ${window.scrollY * 0.25}px, 0)`;
+    });
+
+    /* ADD TO CART */
+
     document.querySelectorAll('[data-add]').forEach(button => {
         button.addEventListener('click', () => {
-
-            const name = button.dataset.name;
-            const price = Number(button.dataset.price);
-
-            cart.push({ name, price });
+            cart.push({
+                name: button.dataset.name,
+                price: Number(button.dataset.price)
+            });
             updateCart();
         });
     });
 
-    /* =========================
-       OPEN CART
-    ========================== */
+    /* TOGGLE CART */
+
     cartBtn.addEventListener('click', () => {
         if (cart.length === 0) return;
-
         cartPanel.classList.toggle('active');
-        cartBtn.classList.toggle('shifted');
     });
 
-    /* =========================
-       UPDATE CART
-    ========================== */
-    function updateCart() {
+    /* CLOSE OUTSIDE */
+
+    document.addEventListener('click', (e) => {
+        if (!cartPanel.contains(e.target) &&
+            !cartBtn.contains(e.target)) {
+            cartPanel.classList.remove('active');
+        }
+    });
+
+    function updateCart(){
 
         cartCount.textContent = cart.length;
 
-        if (cart.length === 0) {
+        if(cart.length === 0){
             cartBtn.classList.add('disabled');
+            cartPanel.classList.remove('active');
             cartPanel.innerHTML = '<h3>Корзина пуста</h3>';
             return;
         }
@@ -57,56 +66,43 @@ document.addEventListener('DOMContentLoaded', () => {
         cartBtn.classList.remove('disabled');
 
         let total = 0;
-
-        cartPanel.innerHTML = `
-            <h3>Корзина</h3>
-        `;
+        cartPanel.innerHTML = '<h3>Корзина</h3>';
 
         cart.forEach((item, index) => {
             total += item.price;
-
             cartPanel.innerHTML += `
-                <div style="margin-bottom:12px;font-size:14px;">
-                    ${item.name} — ₽ ${item.price}
-                    <button data-remove="${index}"
-                        style="float:right;background:#eee;border:none;border-radius:8px;padding:2px 6px;">
-                        ×
-                    </button>
+                <div class="cart-item">
+                    <div>${item.name}</div>
+                    <div class="cart-price">₽ ${item.price}</div>
+                    <button class="cart-remove" data-remove="${index}">×</button>
                 </div>
             `;
         });
 
         cartPanel.innerHTML += `
-            <hr style="margin:15px 0;">
-            <strong>Итого: ₽ ${total}</strong>
-            <br><br>
-            <input id="clientName" placeholder="Ваше имя"
-                style="width:100%;padding:8px;margin-bottom:8px;">
-            <input id="clientPhone" placeholder="Телефон"
-                style="width:100%;padding:8px;margin-bottom:10px;">
-            <button id="checkoutBtn" style="width:100%;">
+            <hr>
+            <div class="cart-total">Итого: ₽ ${total}</div>
+
+            <input id="clientName" placeholder="Ваше имя">
+            <input id="clientPhone" placeholder="Телефон">
+
+            <button id="checkoutBtn" class="cart-checkout">
                 Оформить заказ
             </button>
         `;
 
-        /* REMOVE ITEM */
         document.querySelectorAll('[data-remove]').forEach(btn => {
             btn.addEventListener('click', () => {
-                const index = Number(btn.dataset.remove);
-                cart.splice(index, 1);
+                cart.splice(Number(btn.dataset.remove), 1);
                 updateCart();
             });
         });
 
-        /* WHATSAPP CHECKOUT */
         document.getElementById('checkoutBtn')
             .addEventListener('click', checkout);
     }
 
-    /* =========================
-       WHATSAPP FUNCTION
-    ========================== */
-    function checkout() {
+    function checkout(){
 
         const name = document.getElementById('clientName').value.trim();
         const phone = document.getElementById('clientPhone').value.trim();
@@ -116,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let message = `Новый заказ:%0A`;
+        let message = 'Новый заказ:%0A';
 
         cart.forEach(item => {
             message += `${item.name} — ₽ ${item.price}%0A`;
@@ -124,30 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         message += `%0AИмя: ${encodeURIComponent(name)}%0AТелефон: ${encodeURIComponent(phone)}`;
 
-        /* ⚠ ВСТАВЬ СВОЙ НОМЕР В МЕЖДУНАРОДНОМ ФОРМАТЕ БЕЗ "+" */
-        const whatsappNumber = '79999999999';
-
         window.open(
-            `https://wa.me/${whatsappNumber}?text=${message}`,
+            `https://wa.me/79991624123?text=${message}`,
             '_blank'
         );
     }
-
-    /* =========================
-       SMOOTH PARALLAX
-    ========================= */
-
-    const heroBg = document.querySelector('.hero-bg');
-
-    window.addEventListener('scroll', () => {
-
-        if(window.innerWidth < 768) return;
-
-        const scrollY = window.scrollY;
-        const speed = 0.3;
-
-        heroBg.style.transform = `translateY(${scrollY * speed}px)`;
-    });
 
     updateCart();
 });
