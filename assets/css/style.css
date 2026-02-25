@@ -269,6 +269,9 @@ button{
     border-radius:25px;
     cursor:pointer;
     transition:.2s ease;
+    color:#fff;
+    -webkit-appearance:none;
+    appearance:none;
 }
 
 button:hover{
